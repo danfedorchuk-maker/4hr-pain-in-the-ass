@@ -551,7 +551,7 @@ function setFilter(f, el) {
 
 async function fetchCandles(sym, interval, key, outputsize) {
   const s = sym.replace('/','');
-  const url = `https://api.twelvedata.com/time_series?symbol=${s}&interval=${interval}&outputsize=${outputsize}&apikey=${key}&format=JSON`;
+  const url = `https://api.twelvedata.com/time_series?symbol=${encodeURIComponent(s)}&interval=${interval}&outputsize=${outputsize}&apikey=${key}&format=JSON`;
   const r = await fetch(url);
   const d = await r.json();
   if (!d.values || d.status==='error') throw new Error(d.message||'API error');
