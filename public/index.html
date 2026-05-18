@@ -583,8 +583,8 @@ function togglePair(pair, el) {
 function updateRateNote() {
   const n = selected.size;
   const requests = n * 2;
-  const batches = Math.ceil(n / 3);
-  const secs = Math.ceil(batches * 8);
+  const batches = n;
+  const secs = Math.ceil(batches * 20);
   document.getElementById('rateNote').textContent =
     n === 0 ? 'Select at least one pair.' :
     `${n} pairs selected — ${requests} API requests — ~${secs}s scan time (free plan rate limit)`;
@@ -781,11 +781,9 @@ async function startScan() {
   const results=[], errors=[];
   let done=0;
 
-  // 1 pair at a time with 8s delay between each to respect 8 req/min free limit
-  // Each pair = 2 requests (H4 + H1), so max 4 pairs per minute safely
-  // We do 1 pair every 15s to be safe, or batch 2 pairs with 15s gap
-  const BATCH = 2;
-  const DELAY = 15000; // 15 seconds between batches of 2
+  // 1 pair at a time, 20s delay — Basic 8 plan = 8 req/min, each pair = 2 req
+  const BATCH = 1;
+  const DELAY = 20000; // 20 seconds between each pair
 
   for(let i=0; i<pairs.length; i+=BATCH){
     const batch = pairs.slice(i, i+BATCH);
